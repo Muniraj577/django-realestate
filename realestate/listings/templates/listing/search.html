@@ -1,0 +1,161 @@
+{% extends 'listing/base.html' %}
+{% block title %}Royal Estate - Search Results{% endblock %}
+{% block body %}
+    {% load static %}
+    <div class="hero-wrap" style="background-image: url({% static 'listing/images/bg_1.jpg' %});">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text align-items-center justify-content-center">
+                <div class="col-md-9 ftco-animate text-center">
+                    <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'listings:index' %}">Home</a></span>
+                        <span>Property</span>
+                    </p>
+                    <h1 class="mb-3 bread">Property</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="ftco-search">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 search-wrap">
+                    <h2 class="heading h5 d-flex align-items-center pr-4"><span class="ion-ios-search mr-3"></span>
+                        Search
+                        Property</h2>
+                    <form action="{% url 'listings:search' %}" class="search-property">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md align-items-end">
+                                <div class="form-group">
+                                    <label for="keywords">Keywords</label>
+                                    <div class="form-field">
+                                        <div class="icon"><span class="icon-my_location"></span></div>
+                                        <input type="text" name="keywords" class="form-control" placeholder="Keyword"
+                                               value="{{ values.keywords }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md align-items-end">
+                                <div class="form-group">
+                                    <label for="Price">Price</label>
+                                    <div class="form-field">
+                                        <div class="icon"><span class="icon-my_location"></span></div>
+                                        <input type="text" name="price" class="form-control" placeholder="Price"
+                                               value="{{ values.price }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md align-items-end">
+                                <div class="form-group">
+                                    <label for="property_type">Property Type</label>
+                                    <div class="form-field">
+                                        <div class="select-wrap">
+                                            <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                                            <select name="property_type" id="property_type" class="form-control">
+                                                {% for property in properties %}
+                                                    <option value="For Sale">{{ property.property_type }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md align-self-end">
+                                <div class="form-group">
+                                    <div class="form-field">
+                                        <input type="submit" value="Search" class="form-control btn btn-primary">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="ftco-section bg-light">
+        <div class="container">
+            <div class="row">
+                {% if  properties %}
+                    {% for property in properties %}
+                        <div class="col-md-4 ftco-animate">
+
+                            <div class="properties">
+
+                                <a href="{% url 'listings:detail' property.id %}"
+                                   class="img img-2 d-flex justify-content-center align-items-center"
+                                   style="background-image: url({{ property.photo_main.url }});">
+                                </a>
+                                <div class="text p-3">
+                                    {% if property.property_type %}
+                                        <span class="status sale">{{ property.get_property_type_display }}</span>
+                                    {% endif %}
+                                    <div class="d-flex">
+                                        <div class="one">
+                                            <h3>
+                                                <a href="{% url 'listings:detail' property.id %}">{{ property.title }}</a>
+                                            </h3>
+                                        </div>
+                                        <div class="two">
+                                            <span class="price">{{ property.price }}</span>
+                                        </div>
+                                    </div>
+                                    {#                                <p>{{ property.description }}</p>#}
+                                </div>
+
+                            </div>
+
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="col-md-12">
+                        <p>No Properties Available</p>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="pagination row mt-3">
+                <div class="col text-center">
+                <span class="step-links">
+                     {% if listings.has_previous %}
+                         <a class="btn btn-outline-info mb-4" href="?page=1">&laquo; First</a>
+                         <a class="btn btn-outline-info mb-4" href="?page={{ listings.previous_page_number }}">Previous</a>
+                     {% endif %}
+                    {#                    <span class="current">#}
+{#                        Page {{ properties.number }} of {{ properties.paginator.num_pages }}.#}
+{#                    </span>#}
+                    {% for num in listings.paginator.page_range %}
+                        {% if listings.number == num %}
+                            <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                        {% elif num > listings.number|add:'-3' and num < listings.number|add:'3' %}
+                            <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                        {% endif %}
+                    {% endfor %}
+                    {% if listings.has_next %}
+                        <a class="btn btn-outline-info mb-4" href="?page={{ listings.next_page_number }}">Next</a>
+                        <a class="btn btn-outline-info mb-4" href="?page={{ listings.paginator.num_pages }}">Last &raquo;</a>
+                    {% endif %}
+                </span>
+                </div>
+            </div>
+            {#            <div class="row mt-5">#}
+            {#                <div class="col text-center">#}
+            {#                    <div class="block-27">#}
+            {#                        <ul>#}
+            {#                            <li><a href="#">&lt;</a></li>#}
+            {#                            <li class="active"><span>1</span></li>#}
+            {#                            <li><a href="#">2</a></li>#}
+            {#                            <li><a href="#">3</a></li>#}
+            {#                            <li><a href="#">4</a></li>#}
+            {#                            <li><a href="#">5</a></li>#}
+            {#                            <li><a href="#">&gt;</a></li>#}
+            {#                        </ul>#}
+            {#                    </div>#}
+            {#                </div>#}
+            {#            </div>#}
+        </div>
+    </section>
+{% endblock %}
+

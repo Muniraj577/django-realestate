@@ -1,0 +1,267 @@
+{% extends 'listing/base.html' %}
+{% block title %}Royal Estate - Home Page{% endblock %}
+{% block body %}
+    {% load static %}
+    <section class="home-slider owl-carousel">
+        <div class="slider-item" style="background-image:url({% static 'listing/images/bg_1.jpg' %});">
+            <div class="overlay"></div>
+        </div>
+        <div class="slider-item" style="background-image:url({% static 'listing/images/bg_2.jpg' %});">
+            <div class="overlay"></div>
+        </div>
+    </section>
+
+  <section class="ftco-search">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 search-wrap">
+                    <h2 class="heading h5 d-flex align-items-center pr-4"><span class="ion-ios-search mr-3"></span>
+                        Search
+                        Property</h2>
+                    <form action="{% url 'listings:search' %}" class="search-property">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md align-items-end">
+                                <div class="form-group">
+                                    <label for="keywords">Keywords</label>
+                                    <div class="form-field">
+                                        <div class="icon"><span class="icon-my_location"></span></div>
+                                        <input type="text" name="keywords" class="form-control" placeholder="Keyword"
+                                               value="{{ values.keywords }}">
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="col-md align-items-end">
+                                <div class="form-group">
+                                    <label for="Price">Price</label>
+                                    <div class="form-field">
+                                        <div class="icon"><span class="icon-my_location"></span></div>
+                                        <input type="text" name="price" class="form-control" placeholder="Price"
+                                               value="{{ values.price }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md align-items-end">
+                                <div class="form-group">
+                                    <label for="property_type">Property Type</label>
+                                    <div class="form-field">
+                                        <div class="select-wrap">
+                                            <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                                            <select name="property_type" id="property_type" class="form-control">
+                                                {% for property in properties %}
+                                                    <option>{{ property.property_type }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                         <div class="col-md align-self-end">
+                                <div class="form-group">
+                                    <div class="form-field">
+                                        <input type="submit" value="Search" class="form-control btn btn-primary">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="ftco-section ftco-properties">
+        <div class="container">
+            <div class="row justify-content-center mb-5 pb-3">
+                <div class="col-md-12 heading-section text-center ftco-animate">
+                    {#                    <span class="subheading">Recent Posts</span>#}
+                    <h2 class="float-lg-left">Recent Properties</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="properties-slider owl-carousel ftco-animate">
+                        {% regroup properties by categories as properties_by_category %}
+                        {% for property in properties %}
+                            <div class="item">
+                                <div class="properties">
+                                    <a href="#" class="img d-flex justify-content-center align-items-center"
+                                       style="background-image: url({{ property.photo_main.url }});">
+                                    </a>
+                                    <div class="text p-3">
+                                        {% if property.property_type %}
+                                            <span class="status sale">{{ property.get_property_type_display }}</span>
+                                        {% endif %}
+
+
+                                        <div class="d-flex">
+                                            <div class="one">
+                                                <h3>
+                                                    <a href="{% url 'listings:detail' property.id %}">{{ property.title }}</a>
+                                                </h3>
+                                            </div>
+                                            <div class="two">
+                                                <span class="price">Rs{{ property.price }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="ftco-section ftco-properties">
+        <div class="container">
+            <div class="row justify-content-center mb-3 pb-5">
+                <div class="col-md-12 heading-section text-center ftco-animate">
+                    <h2 class="float-left">Featured Properties</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="properties-slider owl-carousel ftco-animate">
+                        {% regroup featured_properties by featured as featured_properties_by_featured %}
+                        {% for property in featured_properties %}
+                            <div class="item">
+                                <div class="properties">
+                                    <a href="#" class="img d-flex justify-content-center align-items-center"
+                                       style="background-image: url({{ property.photo_main.url }});">
+                                    </a>
+                                    <div class="text p-3">
+                                        {% if property.property_type %}
+                                            {#                                            <span class="status sale">For Sale</span>#}
+                                            {#                                        {% else %}#}
+                                            {#                                            <span class="status sale">For Rent</span>#}
+                                            <span class="status sale">{{ property.get_property_type_display }}</span>
+                                        {% endif %}
+
+
+                                        <div class="d-flex">
+                                            <div class="one">
+                                                <h3>
+                                                    <a href="{% url 'listings:detail' property.id %}">{{ property.title }}</a>
+                                                </h3>
+                                            </div>
+                                            <div class="two">
+                                                <span class="price">Rs{{ property.price }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="ftco-section testimony-section bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 ftco-animate">
+                    <div class="row ftco-animate">
+                        <div class="col-md-12">
+                            <div class="carousel-testimony owl-carousel ftco-owl">
+                                <div class="item">
+                                    <div class="testimony-wrap py-4 pb-5">
+                                        <div class="user-img mb-4"
+                                             style="background-image: url({% static 'listing/images/person_1.jpg' %})">
+		                    <span class="quote d-flex align-items-center justify-content-center">
+		                      <i class="icon-quote-left"></i>
+		                    </span>
+                                        </div>
+                                        <div class="text text-center">
+                                            <p class="mb-4">A small river named Duden flows by their place and supplies
+                                                it
+                                                with the necessary regelialia. It is a paradisematic country, in which
+                                                roasted parts of sentences fly into your mouth.</p>
+                                            <p class="name">Roger Scott</p>
+                                            <span class="position">Clients</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="testimony-wrap py-4 pb-5">
+                                        <div class="user-img mb-4"
+                                             style="background-image: url({% static 'listing/images/person_2.jpg' %})">
+		                    <span class="quote d-flex align-items-center justify-content-center">
+		                      <i class="icon-quote-left"></i>
+		                    </span>
+                                        </div>
+                                        <div class="text text-center">
+                                            <p class="mb-4">A small river named Duden flows by their place and supplies
+                                                it
+                                                with the necessary regelialia. It is a paradisematic country, in which
+                                                roasted parts of sentences fly into your mouth.</p>
+                                            <p class="name">Roger Scott</p>
+                                            <span class="position">Agent</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="testimony-wrap py-4 pb-5">
+                                        <div class="user-img mb-4"
+                                             style="background-image: url({% static 'listing/images/person_3.jpg' %})">
+		                    <span class="quote d-flex align-items-center justify-content-center">
+		                      <i class="icon-quote-left"></i>
+		                    </span>
+                                        </div>
+                                        <div class="text text-center">
+                                            <p class="mb-4">A small river named Duden flows by their place and supplies
+                                                it
+                                                with the necessary regelialia. It is a paradisematic country, in which
+                                                roasted parts of sentences fly into your mouth.</p>
+                                            <p class="name">Roger Scott</p>
+                                            <span class="position">Client</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="testimony-wrap py-4 pb-5">
+                                        <div class="user-img mb-4"
+                                             style="background-image: url({% static 'listing/images/person_1.jpg' %})">
+		                    <span class="quote d-flex align-items-center justify-content-center">
+		                      <i class="icon-quote-left"></i>
+		                    </span>
+                                        </div>
+                                        <div class="text text-center">
+                                            <p class="mb-4">A small river named Duden flows by their place and supplies
+                                                it
+                                                with the necessary regelialia. It is a paradisematic country, in which
+                                                roasted parts of sentences fly into your mouth.</p>
+                                            <p class="name">Roger Scott</p>
+                                            <span class="position">Client</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="testimony-wrap py-4 pb-5">
+                                        <div class="user-img mb-4"
+                                             style="background-image: url({% static 'listing/images/person_1.jpg' %})">
+		                    <span class="quote d-flex align-items-center justify-content-center">
+		                      <i class="icon-quote-left"></i>
+		                    </span>
+                                        </div>
+                                        <div class="text text-center">
+                                            <p class="mb-4">A small river named Duden flows by their place and supplies
+                                                it
+                                                with the necessary regelialia. It is a paradisematic country, in which
+                                                roasted parts of sentences fly into your mouth.</p>
+                                            <p class="name">Roger Scott</p>
+                                            <span class="position">Client</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+

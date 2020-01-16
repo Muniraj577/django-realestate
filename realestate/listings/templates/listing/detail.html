@@ -1,0 +1,130 @@
+{% extends 'listing/base.html' %}
+{% load humanize %}
+{% block title %}Royal Estate - Detail Page{% endblock %}
+{% block body %}
+    {% load static %}
+    <div class="hero-wrap" style="background-image: url({% static 'listing/images/bg_1.jpg' %});">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text align-items-center justify-content-center">
+                <div class="col-md-9 ftco-animate text-center">
+                    <p class="breadcrumbs" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }"><span
+                            class="mr-2"><a href="{% url 'listings:index' %}">Home</a></span>
+{#                        {% for properties in property %}#}
+{#                            <span class="mr-2">#}
+{#                            <a href="{% url 'listings:detail' property.id %}">Detail</a>#}
+{#                             </span>#}
+{#                        {% endfor %}#}
+
+                        <span>Detail</span></p>
+                    <h1 class="mb-3 bread">Detail</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-md-12 ftco-animate">
+                            <div class="single-slider owl-carousel">
+
+                                <div class="item">
+                                    <div class="properties-img"
+                                         style="background-image: url({{ properties.photo_main.url }});">
+                                    </div>
+                                </div>
+                                {% if properties.photo1 %}
+                                    <div class="item">
+                                        <div class="properties-img"
+                                             style="background-image: url({{ properties.photo1.url }});">
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% if properties.photo2 %}
+                                    <div class="item">
+                                        <div class="properties-img"
+                                             style="background-image: url({{ properties.photo2.url }});">
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% if properties.photo3 %}
+                                    <div class="item">
+                                        <div class="properties-img"
+                                             style="background-image: url({{ properties.photo3.url }});">
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% if properties.photo4 %}
+                                    <div class="item">
+                                        <div class="properties-img"
+                                             style="background-image: url({{ properties.photo4.url }});">
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% if properties.photo5 %}
+                                    <div class="item">
+                                        <div class="properties-img"
+                                             style="background-image: url({{ properties.photo5.url }});">
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% if properties.photo6 %}
+                                    <div class="item">
+                                        <div class="properties-img"
+                                             style="background-image: url({{ properties.photo6.url }});">
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% if properties.photo7 %}
+                                    <div class="item">
+                                        <div class="properties-img"
+                                             style="background-image: url({{ properties.photo7.url }});">
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% if properties.photo8 %}
+                                    <div class="item">
+                                        <div class="properties-img"
+                                             style="background-image: url({{ properties.photo8.url }});">
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% if properties.photo9 %}
+                                    <div class="item">
+                                        <div class="properties-img"
+                                             style="background-image: url({{ properties.photo9.url }});">
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-12 Properties-single mt-4 mb-5 ftco-animate">
+                            <h2>{{ properties.title }}</h2>
+                            <p>{{ properties.description }}</p>
+                            {#                            <div class="d-md-flex mt-5 mb-5">#}
+                            {#                                <ul>#}
+                            {#                                    <li><span>Lot Area: </span> 1,250 SQ FT</li>#}
+                            {#                                    <li><span>Bed Rooms: </span> 4</li>#}
+                            {#                                    <li><span>Bath Rooms: </span> 4</li>#}
+                            {#                                    <li><span>2 Garage: </span> 4</li>#}
+                            {#                                </ul>#}
+                            {#                                <ul class="ml-md-5">#}
+                            {#                                    <li><span>Floor Area: </span> 1,300 SQ FT</li>#}
+                            {#                                    <li><span>Year Build:: </span> 2018</li>#}
+                            {#                                    <li><span>Stories: </span> 1</li>#}
+                            {#                                    <li><span>Roofing: </span> New</li>#}
+                            {#                                </ul>#}
+                            {#                            </div>#}
+                        </div>
+
+                    </div>
+                </div> <!-- .col-md-8 -->
+
+            </div>
+        </div>
+    </section> <!-- .section -->
+{% endblock %}

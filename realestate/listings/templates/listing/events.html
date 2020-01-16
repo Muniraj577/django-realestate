@@ -1,0 +1,80 @@
+{% extends 'listing/base.html' %}
+{% block title %}Real Estate - Events Page{% endblock %}
+{% block body %}
+    {% load static %}
+    <div class="hero-wrap" style="background-image: url({% static 'listing/images/bg_1.jpg' %});">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text align-items-center justify-content-center">
+                <div class="col-md-9 ftco-animate text-center">
+                    <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Events</span></p>
+                    <h1 class="mb-3 bread">Events</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="ftco-section bg-light">
+        <div class="container">
+            <div class="row d-flex">
+                {% for event in events %}
+                    <div class="col-md-3 d-flex ftco-animate">
+                        <div class="blog-entry align-self-stretch">
+                            <a href="{% url 'listings:event-detail' event.id %}" class="block-20"
+                               style="background-image: url({{ event.photo.url }});">
+                            </a>
+                            <div class="text mt-3 d-block">
+                                <h3 class="heading mt-3"><a
+                                        href="{% url 'listings:event-detail' event.id %}">{{ event.title }}</a></h3>
+                                <div class="meta mb-3">
+                                    <div><a href="#">{{ event.created_at }}</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+            <div class="pagination row mt-3">
+                <div class="col text-center">
+                <span class="step-links">
+                     {% if events.has_previous %}
+                         <a class="btn btn-outline-info mb-4" href="?page=1">&laquo; First</a>
+                         <a class="btn btn-outline-info mb-4" href="?page={{ events.previous_page_number }}">Previous</a>
+                     {% endif %}
+                    {#                    <span class="current">#}
+{#                        Page {{ properties.number }} of {{ properties.paginator.num_pages }}.#}
+{#                    </span>#}
+                    {% for num in events.paginator.page_range %}
+                        {% if events.number == num %}
+                            <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                        {% elif num > events.number|add:'-3' and num < events.number|add:'3' %}
+                            <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                        {% endif %}
+                    {% endfor %}
+                    {% if events.has_next %}
+                        <a class="btn btn-outline-info mb-4" href="?page={{ events.next_page_number }}">Next</a>
+                        <a class="btn btn-outline-info mb-4" href="?page={{ events.paginator.num_pages }}">Last &raquo;</a>
+                    {% endif %}
+                </span>
+                </div>
+            </div>
+            {#            <div class="row mt-5">#}
+            {#                <div class="col text-center">#}
+            {#                    <div class="block-27">#}
+            {#                        <ul>#}
+            {#                            <li><a href="#">&lt;</a></li>#}
+            {#                            <li class="active"><span>1</span></li>#}
+            {#                            <li><a href="#">2</a></li>#}
+            {#                            <li><a href="#">3</a></li>#}
+            {#                            <li><a href="#">4</a></li>#}
+            {#                            <li><a href="#">5</a></li>#}
+            {#                            <li><a href="#">&gt;</a></li>#}
+            {#                        </ul>#}
+            {#                    </div>#}
+            {#                </div>#}
+            {#            </div>#}
+        </div>
+    </section>
+{% endblock %}
+
